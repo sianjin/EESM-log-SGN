@@ -25,12 +25,13 @@ classdef tgaxLinkPerformanceModel < handle
 %
 %   See also calculateSINR.
 
-%   Copyright 2019 The MathWorks, Inc.
+%   Copyright 2019-2020 The MathWorks, Inc.
 
 %#codegen
 
 properties (Access=private)
-    rbir; % RBIR LUT 
+    rbir; % RBIR LUT
+    rbir1024; % 1024QAM RBIR LUT
     awgn; % AWGN LUT
 end
 
@@ -41,6 +42,10 @@ methods
         % RBIR table from 802.11-14/1450r0 - Box 0 Calibration Results
         lrbirlut = load('tgax_rbit.mat');
         obj.rbir = lrbirlut;
+        
+        % RBIR table for 1024 QAM
+        lrbirlut1024 = load('rbit_1024QAM.mat');
+        obj.rbir1024 = lrbirlut1024;
         
         % AWGN table generated with WLAN Toolbox
         awgnlut = load('tgax_awgn.mat');
@@ -71,12 +76,12 @@ methods
         % returns the estimated packet error rate given the OFDMA
         % multi-user format configuration object CFGMU and user index
         % USERIDX.
-        
+
         if nargin<6
             cfg = varargin{1};
             if nargin==4
                 % [PER,SNREFF] = estimateLinkPerformance(OBJ,SINR,CFGMU,USERIDX)
-                assert(isa(cfg,'wlanHEMUConfig'))
+                % assert(isa(cfg,'wlanHEMUConfig'))
                 userIdx = varargin{2};
                 mcs = cfg.User{userIdx}.MCS;
                 dataLength = cfg.User{userIdx}.APEPLength;
@@ -115,10 +120,8 @@ methods
         end
 
         % Calculate the effective SNR
-        snreff = effectiveSINR(obj,sinr,format,mcs); % no tuning
-        % snreff = effectiveSINR(obj,sinr,format,mcs,1.15,1); % for BCC coding, fixed tuning (a = 1.15, b = 1), IEEE 802.11-14/0527r1, PHY Abstraction for TGax
-        % System Level Simulations
-        
+        snreff = effectiveSINR(obj,sinr,format,mcs);
+
         % Estimate the packet error rate for the given SNR and
         % configuration
         per = estimatePER(obj,snreff,format,mcs,coding,dataLength);
@@ -152,13 +155,19 @@ methods
 
         % Select RBIR table based on modulation scheme
         modscheme = mcs2rate(format,mcs);
-        rbirIdx = modscheme==2.^obj.rbir.M;
-        rbirSNR = obj.rbir.rbirTable(:,1,rbirIdx); % First column is SNR values
-        rbirVal = obj.rbir.rbirTable(:,2,rbirIdx); % Second column is corresponding RBIR information
-        Mrbir = obj.rbir.M(rbirIdx); % Number of coded bits per symbol
-        rbirSNR = rbirSNR(:,:,1); % For codegen
-        rbirVal = rbirVal(:,:,1); % For codegen
-        Mrbir = Mrbir(1); % For codegen
+        if modscheme==1024
+            rbirSNR = obj.rbir1024.rbir(:,1); % First column is SNR values
+            rbirVal = obj.rbir1024.rbir(:,2); % Second column is corresponding RBIR information
+            Mrbir = 10;
+        else
+            rbirIdx = modscheme==2.^obj.rbir.M;
+            rbirSNR = obj.rbir.rbirTable(:,1,rbirIdx); % First column is SNR values
+            rbirVal = obj.rbir.rbirTable(:,2,rbirIdx); % Second column is corresponding RBIR information
+            Mrbir = obj.rbir.M(rbirIdx); % Number of coded bits per symbol
+            rbirSNR = rbirSNR(:,:,1); % For codegen
+            rbirVal = rbirVal(:,:,1); % For codegen
+            Mrbir = Mrbir(1); % For codegen
+        end
 
         % Calculate effective SINR Get information bits per subcarrier
         % given the SINR by interpolating the lookup table
@@ -234,6 +243,7 @@ methods
                 end
             otherwise
                 assert(strcmp(coding,'LDPC'))
+                
                 idx = all(bsxfun(@eq,obj.awgn.perTable_LDPC_MCS,[modulation rate]),2);
                 assert(any(idx),'Format and MCS is not valid with LDPC coding')
                 lut = obj.awgn.perTable_LDPC(:,:,idx);
