@@ -89,13 +89,6 @@ while numPacketErrors<=maxNumErrors && numPkt<=maxNumPackets
     cfgHE.RU{ruIdx}.SpatialMapping = 'Custom';
     cfgHE.RU{ruIdx}.SpatialMappingMatrix = steeringMatrix;
     % -------------------------------------------------------------------
-        
-    % Generate a packet with random PSDU
-    psduLength = getPSDULength(cfgHE); % PSDU length in bytes
-    txPSDU = cell(numUsers,1);
-    for userIdxIter = 1:numUsers
-        txPSDU{userIdxIter} = randi([0 1],psduLength(userIdxIter)*8,1,'int8');
-    end
     
     pathGains = tgaxChannel{userIdx}();    % Get path gains
     chan = helperPerfectChannelEstimate(pathGains,pathFilters,ofdmInfo.FFTLength,ofdmInfo.CPLength,ofdmInfo.ActiveFFTIndices);
