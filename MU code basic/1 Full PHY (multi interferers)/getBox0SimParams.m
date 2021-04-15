@@ -1,4 +1,4 @@
-function simParams = getBox0SimParams(chans,numTxRx,mcs,cfgHE,maxNumErrors,maxNumPackets,userIdx,ruIdx,Nsts)
+function simParams = getBox0SimParams(chans,numTxRx,mcs,cfgHE,maxNumErrors,maxNumPackets,userIdx,ruIdx,Nsts,intPathlossdB)
 % getBox0SimParams Example helper function
 
 %   Copyright 2019 The MathWorks, Inc.
@@ -147,7 +147,7 @@ tgaxChannel.NormalizeChannelOutputs = false;
 simParamsRef = struct('MCS',0,'SNR',0,'RandomSubstream',0,'Config',cfgHE, ...
     'MaxNumPackets',maxNumPackets,'MaxNumErrors',maxNumErrors, ...
     'NumTransmitAntennas',0,'NumReceiveAntennas',0,'DelayProfile',"Model-B",...
-    'Channel',tgaxChannel,'userIdx',userIdx,'ruIdx',ruIdx);
+    'Channel',tgaxChannel,'userIdx',userIdx,'ruIdx',ruIdx,'intPathlossdB',intPathlossdB);
 simParams = repmat(simParamsRef,0,0);
 % There must be a SNR cell for each channel
 assert(all(numel(channelConfigs)==numel(snr)))
