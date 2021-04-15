@@ -1,4 +1,4 @@
-function simParams = getBox0SimParams(chans,numTxRx,mcs,cfgHE,maxNumErrors,maxNumPackets,userIdx,ruIdx,Nsts,intPathlossdB)
+function simParams = getBox0SimParams(chans,numTxRx,mcs,cfgHE,maxNumErrors,maxNumPackets,userIdx,ruIdx,Nsts)
 % getBox0SimParams Example helper function
 
 %   Copyright 2019 The MathWorks, Inc.
@@ -21,6 +21,8 @@ snr = {
     [16:4:32,34], ...    % MCS 7
     [18:4:34,36] ... % MCS 8
     [18:4:38] ...     % MCS 9
+    21.5:4:37.5 ... % MCS 10
+    22:4:38 ...     % MCS 11
     }; ...
     	{... % 4x1
     1:3:17, ...  % MCS 0
@@ -33,6 +35,8 @@ snr = {
     24:4:48, ... % MCS 7
     26:4:50 ...  % MCS 8
     29:4:54 ...  % MCS 9
+    21.5:4:37.5 ... % MCS 10
+    22:4:38 ...     % MCS 11
     }; ...
         {... % 4x2
     1:3:17, ...  % MCS 0
@@ -45,6 +49,8 @@ snr = {
     24:4:48, ... % MCS 7
     26:4:50 ...  % MCS 8
     29:4:54 ...  % MCS 9
+    21.5:4:37.5 ... % MCS 10
+    22:4:38 ...     % MCS 11
     }; ...
          {... % 8x2
     1:3:17, ...  % MCS 0
@@ -57,6 +63,8 @@ snr = {
     24:4:48, ... % MCS 7
     26:4:50 ...  % MCS 8
     29:4:54 ...  % MCS 9
+    21.5:4:37.5 ... % MCS 10
+    22:4:38 ...     % MCS 11
     }; ...
     ];
 
@@ -73,6 +81,8 @@ snr = {
     18:4:30, ...    % MCS 7
     21.5:4:37.5 ... % MCS 8
     20:4:36 ...     % MCS 9
+    21.5:4:37.5 ... % MCS 10
+    22:4:38 ...     % MCS 11
     }; ...
     	{... % 4x1
     -4:2:2, ...   % MCS 0
@@ -85,6 +95,8 @@ snr = {
     24:3:39, ...  % MCS 7
     27:3:40 ...   % MCS 8
     29:3:44 ...   % MCS 9
+    21.5:4:37.5 ... % MCS 10
+    22:4:38 ...     % MCS 11
     }; ...
         {... % 4x2
     [11,13,14,15], ...   % MCS 0
@@ -97,6 +109,8 @@ snr = {
     24:3:39, ...  % MCS 7
     27:3:40 ...   % MCS 8
     29:3:44 ...   % MCS 9
+    21.5:4:37.5 ... % MCS 10
+    22:4:38 ...     % MCS 11
     }; ...
         {... % 8x2
     1:2:10, ...   % MCS 0
@@ -109,6 +123,8 @@ snr = {
     24:3:39, ...  % MCS 7
     27:3:40 ...   % MCS 8
     29:3:44 ...   % MCS 9
+    21.5:4:37.5 ... % MCS 10
+    22:4:38 ...     % MCS 11
     }; ...
     ] ...
     };
@@ -131,7 +147,7 @@ tgaxChannel.NormalizeChannelOutputs = false;
 simParamsRef = struct('MCS',0,'SNR',0,'RandomSubstream',0,'Config',cfgHE, ...
     'MaxNumPackets',maxNumPackets,'MaxNumErrors',maxNumErrors, ...
     'NumTransmitAntennas',0,'NumReceiveAntennas',0,'DelayProfile',"Model-B",...
-    'Channel',tgaxChannel,'userIdx',userIdx,'ruIdx',ruIdx,'intPathlossdB',intPathlossdB);
+    'Channel',tgaxChannel,'userIdx',userIdx,'ruIdx',ruIdx);
 simParams = repmat(simParamsRef,0,0);
 % There must be a SNR cell for each channel
 assert(all(numel(channelConfigs)==numel(snr)))
