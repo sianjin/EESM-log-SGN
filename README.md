@@ -9,7 +9,7 @@ Figure 1: Flow chart of traditional PHY layer abstraction
 
 Traditional PHY layer abstraction suggested by IEEE TGax group is shown in Figure 1. This PHY layer abstraction compress channel, OFDM MIMO setups into a single metric called effective SINR, which is then mapped into instantaneous PER for system simulations. Our contribution finds while these earlier PHY layer abstractions do reduce runtimes compared with full PHY simulation, they still suffer from scaling with MIMO dimensions (the number of transmit antennas and the number of receive antennas), MU dimensions (the number of users that are simultaneously served), bandwidth, and the number of interferers. The reason is that it requires generating channel, precoding and the decoding matrices, and calculating post-MIMO processing SINR matrices online. These operations involve expensive matrix calculations that scale with MIMO dimensions, MU dimensions, bandwidth, and the number of interferes. This motivates us to create a new PHY layer abstraction whose runtime is insensitive to the above dimensionality variations.
 
-![alt text](https://depts.washington.edu/funlab/wp-content/uploads/2021/04/validation.png)
+![alt text](https://depts.washington.edu/funlab/wp-content/uploads/2021/04/validation2.png)
 
 Figure 2: Approximating effective SINR by log-SGN distribution under OFDMA allocation with 52 subcarriers, 8 × 2 MIMO with 2 streams, TGax channel model-D, MCS4. For the interference case, the RX INR is 20dB lower than the RX SNR
 
@@ -18,7 +18,7 @@ Our approach is driven by a key underlying question: since the link performance 
 ![alt text](https://depts.washington.edu/funlab/wp-content/uploads/2021/04/EESMlogSGNAbs.png)
 Figure 3: Flow chart of the proposed EESM-log-SGN PHY layer abstraction
 
-![alt text](https://depts.washington.edu/funlab/wp-content/uploads/2021/04/runtimeComp.png)
+![alt text](https://depts.washington.edu/funlab/wp-content/uploads/2021/04/runtimeComp2.png)
 
 Table 1: Average runtime comparison between the full PHY simulation and traditional EESM and RBIR PHY layer abstractions for running a 40000-packet simulation at a specific RX SNR in MATLAB
 
