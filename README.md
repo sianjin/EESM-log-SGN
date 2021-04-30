@@ -20,7 +20,7 @@ Figure 3: Flow chart of the proposed EESM-log-SGN PHY layer abstraction
 
 ![alt text](https://depts.washington.edu/funlab/wp-content/uploads/2021/04/runtimeComp2.png)
 
-Table 1: Average runtime comparison between the full PHY simulation and traditional EESM and RBIR PHY layer abstractions for running a 40000-packet simulation at a specific RX SNR in MATLAB
+Table 1: Average runtime comparison between the traditional EESM PHY layer abstraction and the proposed EESM-log-SGN PHY layer abstraction for running a 40000-packet simulation at a specific RX SNR in MATLAB
 
 For more detailed principles of EESM-log-SGN, please see the IEEE TCOM paper: “Efficient PHY Layer Abstraction for Fast Simulations in Complex System Environments”. 
 
