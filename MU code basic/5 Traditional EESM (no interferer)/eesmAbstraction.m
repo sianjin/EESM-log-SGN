@@ -6,17 +6,16 @@
 % The traditional EESM simulation configurations in this script cover: 
 % 1) 20MHz OFDM/OFDMA MIMO/MU-MIMO system
 % 2) No interference 
-%% Traditional EESM PHY layer abstraction simulation setup
+%% Traditional EESM PHY layer abstraction setup
 clear all
 tStart = tic;
-% Simulation Parameters
 mcs = [4]; % Vector of MCS to simulate between 0 and 11
 numTxRx = [8 2]; % Matrix of MIMO schemes, each row is [numTx numRx]
 chan = "Model-D"; % String array of delay profiles to simulate
 userIdx = 2; % User of investigation
 ruIdx = 2; % RU of investigation
 Nsts = 2; % Number of space-time streams
-beta = 8.3867; % EESM tuning parameter
+betaOpt = 8.3891; % EESM tuning parameter
 maxnumberrors = 40*1e3;  % The maximum number of packet errors at an SNR point
 maxNumPackets = 40*1e3; % The maximum number of packets at an SNR point
 % maxnumberrors = 5*1e1;  % The maximum number of packet errors at an SNR point
@@ -28,10 +27,11 @@ for userIdxIter = 1:numel(cfgHE.User)
     cfgHE.User{userIdxIter}.APEPLength = 1000; % Payload length in bytes
 end
 
+%% Traditional EESM PHY layer abstraction
 % Generate a structure array of simulation configurations. Each element is
 % one SNR point to simulate.
 simParams = getBox0SimParams(chan,numTxRx,mcs,cfgHE,maxnumberrors,maxNumPackets,...
-    userIdx,ruIdx,Nsts,beta);
+    userIdx,ruIdx,Nsts,betaOpt);
 snrs = [simParams.SNR];
 
 % Simulate each configuration
@@ -50,4 +50,6 @@ plot(snrs, avgPerEESM,'-o','LineWidth',1)
 title('Traditional EESM PHY Layer Abstraction')
 xlabel('RX SNR (dB)');
 ylabel('Average PER');
+set(gca, 'YScale', 'log')
+legend('EESM, MCS4')
 grid on
