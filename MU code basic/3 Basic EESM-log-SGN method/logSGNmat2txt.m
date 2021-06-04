@@ -1,3 +1,5 @@
+% This file converts the output .mat file from eesmLogSGNBasic.m into the 
+% ns-3/C++ format and saved in .txt file
 clear all
 load('snr_LogSGNParam_Config192_Model-B_1-by-1_MCS5.mat')
 len = length(snrs);
