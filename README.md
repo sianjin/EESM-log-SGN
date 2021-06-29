@@ -29,5 +29,6 @@ This code provides the MATLAB implementation of EESM-log-SGN. The prerequisites 
 
 ## Code tutorial video and slides
 Video: https://vimeo.com/567675867
+
 Slides: https://www.nsnam.org/wp-content/uploads/2021/tutorials/EESM-log-SGN-tutorial.pptx
 
