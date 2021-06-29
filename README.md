@@ -26,3 +26,8 @@ For more detailed principles of EESM-log-SGN, please see the IEEE TCOM paper: â€
 
 ## About this code
 This code provides the MATLAB implementation of EESM-log-SGN. The prerequisites are MATLAB 2020b (or later version) and MATLAB WLAN toolbox in MATLAB 2020b (or later version). The document named "EESMlogSGN_quickStart" shows a quick start guide of our code. Multiple step-by-step MATLAB examples are also provided as tutorials for implementing of EESM-log-SGN in MATLAB.
+
+## Code tutorial video and slides
+Video: https://vimeo.com/567675867
+Slides: https://www.nsnam.org/wp-content/uploads/2021/tutorials/EESM-log-SGN-tutorial.pptx
+
