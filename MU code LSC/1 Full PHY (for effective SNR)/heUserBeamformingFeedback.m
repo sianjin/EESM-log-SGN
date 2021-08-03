@@ -95,10 +95,10 @@ chanEstPerm = permute(chanEstMinusCSD,[3 2 1]); % Nr-by-Nsts-by-Nst
 % for the streams allocated to the user
 Nst = size(chanEstPerm,3);
 numRx = size(demodHELTF,3);
-V = complex(zeros(Nst,numSTS,numRx)); % Nst-by-Nsts-by-Nr
+V = complex(zeros(Nst,numSTS,min(numRx,numSTS))); % Nst-by-Nsts-by-min(Nr,Nsts)
 for ist = 1:Nst
     [~,~,V(ist,:,:)] = svd(chanEstPerm(:,:,ist),'econ');
 end
-steeringMat = permute(V,[1 3 2]); % Nst-by-Nr-by-Nsts
+steeringMat = permute(V,[1 3 2]); % Nst-by-min(Nr,Nsts)-by-Nsts
 
 end
