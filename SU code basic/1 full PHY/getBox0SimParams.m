@@ -1,4 +1,4 @@
-function simParams = getBox0SimParams(chans,numTxRx,mcs,cfgHE,maxNumErrors,maxNumPackets)
+function simParams = getBox0SimParams(chans,numTxRx,mcs,cfgHE,maxNumErrors,maxNumPackets,Nsts)
 % getBox0SimParams Example helper function
 
 %   Copyright 2019 The MathWorks, Inc.
@@ -145,7 +145,7 @@ for ichan = 1:numel(chans)
                 % Setup PHY configuration
                 sp.Config.MCS = mcs(imcs);
                 sp.Config.NumTransmitAntennas = numTxRx(itxrx,1);
-                sp.Config.NumSpaceTimeStreams = 1;
+                sp.Config.NumSpaceTimeStreams = Nsts;
                 sp.Config.SpatialMapping = 'Fourier';
 
                 % Configure channel model

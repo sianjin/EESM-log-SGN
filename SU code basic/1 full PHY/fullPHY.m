@@ -3,6 +3,7 @@ clear all
 tStart = tic;% Simulation Parameters
 mcs = [11]; % Vector of MCS to simulate between 0 and 11
 numTxRx = [1 1]; % Matrix of MIMO schemes, each row is [numTx numRx]
+Nsts = 1; % Number of space-time streams
 chan = "Model-D"; % String array of delay profiles to simulate
 % maxnumberrors = 40*1e3;  % The maximum number of packet errors at an SNR point
 % maxNumPackets = 40*1e3; % The maximum number of packets at an SNR point
@@ -18,7 +19,7 @@ cfgHE.ChannelCoding = 'LDPC';     % Channel coding
 
 % Generate a structure array of simulation configurations. Each element is
 % one SNR point to simulate.
-simParams = getBox0SimParams(chan,numTxRx,mcs,cfgHE,maxnumberrors,maxNumPackets);
+simParams = getBox0SimParams(chan,numTxRx,mcs,cfgHE,maxnumberrors,maxNumPackets,Nsts);
 snrs = [simParams.SNR];
 
 % Simulate each configuration
