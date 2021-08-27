@@ -7,7 +7,7 @@
 clear all
 % Copy the generated file from the full PHY simualtion
 % in this folder and load it here
-load('sinrPer_Config192_Model-D_4-by-2_MCS4.mat');
+load('snrPer_CBW20_Model-D_2-by-4_MCS0.mat');
 
 % Tuning parameter in this function: EESM parameter - beta
 % Suggestion: the higher MCS, the larger initialized beta
@@ -24,13 +24,13 @@ load('sinrPer_Config192_Model-D_4-by-2_MCS4.mat');
 %   MCS: 9  -> beta : 170
 %   MCS: 10  -> beta : 410
 %   MCS: 11  -> beta : 650
-beta = 7;
+beta = 1;
 
 % Load basic setup
-channelCoding = cfgHE.User{1}.ChannelCoding; 
-dataLength = cfgHE.User{1}.APEPLength;  
+channelCoding = cfgHE.ChannelCoding; 
+dataLength = cfgHE.APEPLength;  
 format = 'HE_MU'; % hard code for MUConfig
-allocationIndex = cfgHE.AllocationIndex;
+bandwidth = cfgHE.ChannelBandwidth;
 abstraction = tgaxEESMLinkPerformanceModel;
  
 % Load post-MIMO processing SINR matrix and error state
@@ -43,11 +43,11 @@ numSnr = sum(resultIdx);
 %% Optimize EESM parameter beta
 mse = @(beta)awgnPerSnrFittingMse(abstraction,sinrStore,perStore,format,mcs,channelCoding,dataLength,beta);
 betaOpt = fminsearch(mse,beta); % Optimized EESM parameter
-[binsnr,binper,lut,sinrEff] = awgnPerSnrFitting(abstraction,sinrStore,perStore,format,mcs,channelCoding,dataLength,betaOpt,numSnr);
+[binsnr,binper,lut,snrEff] = awgnPerSnrFitting(abstraction,sinrStore,perStore,format,mcs,channelCoding,dataLength,betaOpt,numSnr);
 
 %% Store effective SNR vector under different SNR point
-fname_I = sprintf('eesmEffSinr_Config%d_%s_%s-by-%s_MCS%s.mat',allocationIndex,char(chan),num2str(numTxRx(1)),num2str(numTxRx(2)),num2str(mcs));
-save(fname_I,'sinrEff','betaOpt','allocationIndex','mcs','numTxRx','chan','maxNumPackets','snrs')
+fname_I = sprintf('eesmEffSinr_%s_%s_%s-by-%s_MCS%s.mat',bandwidth,char(chan),num2str(numTxRx(1)),num2str(numTxRx(2)),num2str(mcs));
+save(fname_I,'snrEff','betaOpt','bandwidth','mcs','numTxRx','chan','maxNumPackets','snrs')
 
 %% Plot EESM L2S mapping results
 heff = gobjects(1,1);
