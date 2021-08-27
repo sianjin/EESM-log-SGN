@@ -6,16 +6,17 @@
 %% Load data
 clear all
 % Obtain log-SGN parameter under the RX SNR: snrs(snrIdx) in dB
-snrIdx = 1; 
+snrIdx = 6; 
 % Load Post-MIMO processing SINR matrix
-load('sinrPer_Config192_Model-B_1-by-1_MCS5.mat')
+load('snrPer_CBW20_Model-D_2-by-4_MCS0.mat')
 sinrStore = results{snrIdx}.sinrStore;
 % Load optimized EESM parameter beta
-load('eesmEffSinr_Config192_Model-B_1-by-1_MCS5.mat')
+load('eesmEffSinr_CBW20_Model-D_2-by-4_MCS0.mat')
 % Load basic setup
-dataLength = cfgHE.User{1}.APEPLength;
+dataLength = cfgHE.APEPLength;
 coding = 'LDPC'; % Channel coding
 format = 'HE_MU';  % OFDM/OFDMA MIMO/MU-MIMO setup
+bandwidth = cfgHE.ChannelBandwidth;
 abstraction = tgaxEESMLinkPerformanceModel;
 % Calculate effective SINR histogram
 gammaEffdB = effectiveSinrVec(abstraction,sinrStore,betaOpt);
@@ -23,7 +24,7 @@ gammaEffLinear = 10.^(gammaEffdB/10);
 %% Log-SGN parameters optimization
 logSGNParamBest = logSGNFitting(gammaEffLinear);
 %% Save log-SGN parameter in file
-filename = sprintf('snr_LogSGNParam_Config%d_%s_%s-by-%s_MCS%s.mat',allocationIndex,char(chan),num2str(numTxRx(1)),num2str(numTxRx(2)),num2str(mcs));
+filename = sprintf('snr_LogSGNParam_%s_%s_%s-by-%s_MCS%s.mat',bandwidth,char(chan),num2str(numTxRx(1)),num2str(numTxRx(2)),num2str(mcs));
 m = matfile(filename, 'Writable', true);
 % Set saved SNR index
 savedSnrIdx = snrIdx; 
